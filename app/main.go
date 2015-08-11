@@ -9,6 +9,7 @@ import (
 	"github.com/heckfer/ProjectCars/model"
 	"log"
 	"github.com/martini-contrib/render"
+	"github.com/martini-contrib/binding"
 )
 
 func init() {
@@ -16,14 +17,14 @@ func init() {
 	router := martini.Classic()
 	router.Use(render.Renderer(render.Options{IndentJSON: true, }))
 
-	router.Post("/create_post", CreatePostHandler)
+	router.Post("/create_post", binding.Bind(model.Post{}), CreatePostHandler)
 	router.Get("/list_posts", ListPostsHandler)
 
 	http.Handle("/", router)
 }
 
 
-func CreatePostHandler(c martini.Context, req *http.Request, r render.Render) {
+func CreatePostHandler(c martini.Context, req *http.Request, r render.Render, post model.Post) {
 	gae := appengine.NewContext(req)
 	namespace := appengine.ModuleName(gae)
 
@@ -34,12 +35,7 @@ func CreatePostHandler(c martini.Context, req *http.Request, r render.Render) {
 		panic(fmt.Sprintf("Could not create GAE context: %v", err))
 	}
 
-	post := &model.Post{
-		CarPlate: "IWI-5585",
-		Message: "I saw a credit card falling from this car! Thats crazy",
-	}
-
-	err = db.NewDatastore(context).Create(post)
+	err = db.NewDatastore(context).Create(&post)
 	if err != nil {
 		log.Printf("Error: %+v", err)
 		r.JSON(500, "Error")
