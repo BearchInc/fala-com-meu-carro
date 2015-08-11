@@ -21,6 +21,10 @@ _testmain.go
 
 *.exe
 *.test
-*.prof
-.idea
-ProjectCars.iml
+
+/.godeps
+/.envrc
+
+# Godeps
+Godeps/_workspace
+Godeps/Readme
