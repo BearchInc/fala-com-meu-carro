@@ -3,10 +3,17 @@ import (
 	"net/http"
 	"io"
 	"fmt"
+	"github.com/heckfer/ProjectCars/model"
 )
 
 func main() {
-	resp, _ := newRequest("POST", "http://localhost:8080/create_post", nil)
+	post := &model.Post{
+		CarPlate: "IWI-5585",
+		Message: "I saw a credit card falling from this car! Thats crazy",
+	}
+
+	resp, _ := newRequest("POST", "http://localhost:8080/create_post", post)
+
 	fmt.Println(resp)
 }
 
