@@ -14,13 +14,13 @@ import (
 
 func init() {
 
-	router := martini.Classic()
-	router.Use(render.Renderer(render.Options{IndentJSON: true, }))
+	martini := martini.Classic()
+	martini.Use(render.Renderer(render.Options{IndentJSON: true, }))
 
-	router.Post("/create_post", binding.Bind(model.Post{}), CreatePostHandler)
-	router.Get("/list_posts", ListPostsHandler)
+	martini.Post("/create_post", binding.Bind(model.Post{}), CreatePostHandler)
+	martini.Get("/list_posts", ListPostsHandler)
 
-	http.Handle("/", router)
+	http.Handle("/", martini)
 }
 
 
