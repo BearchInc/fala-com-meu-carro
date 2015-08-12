@@ -1,26 +1,29 @@
 package main
 
 import (
-	"github.com/go-martini/martini"
 	"net/http"
 	"appengine"
 	"fmt"
+	"log"
 	"github.com/bearchinc/datastore-model"
 	"github.com/heckfer/ProjectCars/model"
-	"log"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/binding"
+	"github.com/go-martini/martini"
 )
 
 func init() {
 
-	martini := martini.Classic()
-	martini.Use(render.Renderer(render.Options{IndentJSON: true, }))
+	m := martini.Classic()
+	m.Use(render.Renderer(render.Options{IndentJSON: true, }))
 
-	martini.Post("/create_post", binding.Bind(model.Post{}), CreatePostHandler)
-	martini.Get("/list_posts", ListPostsHandler)
+	m.Group("/posts", func(r martini.Router) {
+		r.Post("/create", binding.Bind(model.Post{}), CreatePostHandler)
+		r.Get("/list", ListPostsHandler)
+		r.Get("/list/:plate", ListPostsByCarPlateHandler)
+	})
 
-	http.Handle("/", martini)
+	http.Handle("/", m)
 }
 
 
@@ -36,6 +39,23 @@ func CreatePostHandler(c martini.Context, req *http.Request, r render.Render, po
 		r.JSON(200, post)
 	}
 }
+
+func ListPostsByCarPlateHandler(c martini.Context, req *http.Request, r render.Render, params martini.Params) {
+
+	context := getAppengineContext(req)
+
+	posts := model.Posts{}
+	carPlate := params["plate"]
+	err := db.NewDatastore(context).Query(db.From(new(model.Post)).Filter("CarPlate=", carPlate)).All(&posts)
+
+	if err != nil {
+		log.Printf("Error: %+v", err)
+		r.JSON(500, "Error")
+	} else {
+		r.JSON(200, posts)
+	}
+}
+
 
 func ListPostsHandler(c martini.Context, req *http.Request, r render.Render) {
 
