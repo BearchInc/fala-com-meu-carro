@@ -8,11 +8,13 @@ import (
 	"log"
 	"appengine"
 	"fmt"
+	"strings"
 )
 
 func CreatePostHandler(c martini.Context, req *http.Request, r render.Render, post model.Post) {
-
 	context := getAppengineContext(req)
+
+	post.CarPlate = strings.ToUpper(post.CarPlate)
 
 	err := db.NewDatastore(context).Create(&post)
 	if err != nil {
