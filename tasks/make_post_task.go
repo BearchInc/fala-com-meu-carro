@@ -3,7 +3,7 @@ import (
 	"net/http"
 	"io"
 	"fmt"
-	"github.com/heckfer/ProjectCars/model"
+	"github.com/heckfer/fala-com-meu-carro/model"
 )
 
 func main() {
