@@ -2,11 +2,11 @@ package main
 
 import (
 	"net/http"
-	"github.com/heckfer/ProjectCars/model"
+	"github.com/heckfer/fala-com-meu-carro/model"
 	"github.com/martini-contrib/render"
 	"github.com/martini-contrib/binding"
 	"github.com/go-martini/martini"
-	"github.com/heckfer/ProjectCars/handler"
+	"github.com/heckfer/fala-com-meu-carro/handler"
 )
 
 func init() {

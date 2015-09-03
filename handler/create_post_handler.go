@@ -3,7 +3,7 @@ import (
 	"github.com/go-martini/martini"
 	"net/http"
 	"github.com/martini-contrib/render"
-	"github.com/heckfer/ProjectCars/model"
+	"github.com/heckfer/fala-com-meu-carro/model"
 	"github.com/bearchinc/datastore-model"
 	"log"
 	"appengine"

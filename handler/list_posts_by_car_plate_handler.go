@@ -1,7 +1,7 @@
 package handler
 import (
 	"log"
-	"github.com/heckfer/ProjectCars/model"
+	"github.com/heckfer/fala-com-meu-carro/model"
 	"github.com/bearchinc/datastore-model"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
