@@ -1,5 +1,5 @@
 application: staging-api-getunseen
-module: project-cars
+module: fala-com-meu-carro
 version: 1
 runtime: go
 api_version: go1
