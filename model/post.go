@@ -1,10 +1,26 @@
 package model
-import "github.com/bearchinc/datastore-model"
+import (
+	"github.com/drborges/appx"
+	"appengine/datastore"
+)
 
 type Post struct {
-	db.Model `db:"Post"`
+	appx.Model
 	CarPlate string `json:"car_plate" form:"car_plate"`
 	Message  string `json:"message" form:"message"`
 }
 
-type Posts []*Post
+func (post *Post) KeySpec() *appx.KeySpec {
+	return &appx.KeySpec{
+		Kind:       "Post",
+		Incomplete: true,
+	}
+}
+
+var Posts = struct {
+	All func() *datastore.Query
+}{
+	All: func() *datastore.Query {
+		return datastore.NewQuery(new(Post).KeySpec().Kind)
+	},
+}
