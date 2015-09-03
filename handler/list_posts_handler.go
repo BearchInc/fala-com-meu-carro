@@ -17,22 +17,22 @@ func ListPostsHandler(c martini.Context, req *http.Request, r render.Render, app
 
 	if err != nil {
 		log.Printf("Error: %+v", err)
-		r.JSON(http.StatusInternalServerError, "Error")
+
+		response := model.Response{
+			ErrorCode:http.StatusInternalServerError,
+			Message: "Some error happened",
+			Data: []*model.Post{},
+		}
+
+		r.JSON(http.StatusInternalServerError, response)
 	} else {
-		r.JSON(http.StatusOK, posts)
+
+		response := model.Response{
+			ErrorCode:http.StatusOK,
+			Message: "",
+			Data: posts,
+		}
+
+		r.JSON(http.StatusOK, response)
 	}
 }
-
-//var places []*models.Place
-//err := appx.Query(models.Places.ByRecent()).
-//StreamOf(models.Place{}).
-//Each(models.Places.LoadBroadcasts(appx)).
-//CollectAs(&places)
-//
-//if err != nil {
-//logger.Infof("Error fetching places: Err: %+v", err)
-//render.JSON(http.StatusInternalServerError, []*models.Place{})
-//return
-//}
-//
-//render.JSON(http.StatusOK, places)
