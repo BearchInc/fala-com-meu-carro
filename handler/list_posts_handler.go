@@ -4,20 +4,35 @@ import (
 	"net/http"
 	"github.com/martini-contrib/render"
 	"github.com/heckfer/fala-com-meu-carro/model"
-	"github.com/bearchinc/datastore-model"
 	"log"
+
+	"github.com/drborges/appx"
 )
 
-func ListPostsHandler(c martini.Context, req *http.Request, r render.Render) {
-	context := getAppengineContext(req)
+func ListPostsHandler(c martini.Context, req *http.Request, r render.Render, appx *appx.Datastore) {
 
-	posts := model.Posts{}
-	err := db.NewDatastore(context).Query(db.From(new(model.Post))).All(&posts)
+	var posts []*model.Post
+	q := model.Posts.All()
+	err := appx.Query(q).Results(&posts)
 
 	if err != nil {
 		log.Printf("Error: %+v", err)
-		r.JSON(500, "Error")
+		r.JSON(http.StatusInternalServerError, "Error")
 	} else {
-		r.JSON(200, posts)
+		r.JSON(http.StatusOK, posts)
 	}
 }
+
+//var places []*models.Place
+//err := appx.Query(models.Places.ByRecent()).
+//StreamOf(models.Place{}).
+//Each(models.Places.LoadBroadcasts(appx)).
+//CollectAs(&places)
+//
+//if err != nil {
+//logger.Infof("Error fetching places: Err: %+v", err)
+//render.JSON(http.StatusInternalServerError, []*models.Place{})
+//return
+//}
+//
+//render.JSON(http.StatusOK, places)
