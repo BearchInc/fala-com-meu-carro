@@ -1,22 +1,31 @@
 package handler
 import (
-	"github.com/go-martini/martini"
-	"net/http"
 	"github.com/martini-contrib/render"
 	"github.com/heckfer/fala-com-meu-carro/model"
 	"strings"
 	"github.com/drborges/appx"
+	"log"
+	"net/http"
 )
 
-func CreatePostHandler(c martini.Context, req *http.Request, r render.Render, post model.Post, appx *appx.Datastore) {
+func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
+
+	response := model.Response{
+		ErrorCode: http.StatusOK,
+		Message: "",
+		Data: nil,
+	}
 
 	post.CarPlate = strings.ToUpper(post.CarPlate)
+	err := appx.Save(&post)
 
-	//	err := db.NewDatastore(context).Create(&post)
-	//	if err != nil {
-	//		log.Printf("Error: %+v", err)
-	//		r.JSON(500, "Error")
-	//	} else {
-	//		r.JSON(200, post)
-	//	}
+	if err != nil {
+		log.Printf("Error: %+v", err)
+		response.ErrorCode = http.StatusInternalServerError
+		response.Message = "Some error happened"
+	} else {
+		response.Data = post
+	}
+
+	r.JSON(response.ErrorCode, response)
 }
