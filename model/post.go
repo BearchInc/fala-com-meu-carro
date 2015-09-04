@@ -18,9 +18,13 @@ func (post *Post) KeySpec() *appx.KeySpec {
 }
 
 var Posts = struct {
-	All func() *datastore.Query
+	All           func() *datastore.Query
+	AllByCarPlate func(string) *datastore.Query
 }{
 	All: func() *datastore.Query {
 		return datastore.NewQuery(new(Post).KeySpec().Kind)
+	},
+	AllByCarPlate: func(carPlate string) *datastore.Query {
+		return datastore.NewQuery(new(Post).KeySpec().Kind).Filter("CarPlate=", carPlate)
 	},
 }
