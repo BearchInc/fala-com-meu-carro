@@ -10,3 +10,6 @@ list-posts:
 
 list-posts-pretty:
 	curl localhost:8080/posts/list | prettyjson
+
+create-post:
+	curl -XPOST localhost:8080/posts/create --data "car_plate=AAA-1233&message=HAte you" | prettyjson
