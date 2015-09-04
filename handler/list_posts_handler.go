@@ -12,27 +12,27 @@ import (
 func ListPostsHandler(c martini.Context, req *http.Request, r render.Render, appx *appx.Datastore) {
 
 	var posts []*model.Post
-	q := model.Posts.All()
-	err := appx.Query(q).Results(&posts)
+	err := appx.Query(model.Posts.All()).Results(&posts)
+
+	responseCode := http.StatusOK
+	message := ""
+	var data []*model.Post
 
 	if err != nil {
 		log.Printf("Error: %+v", err)
 
-		response := model.Response{
-			ErrorCode:http.StatusInternalServerError,
-			Message: "Some error happened",
-			Data: []*model.Post{},
-		}
-
-		r.JSON(http.StatusInternalServerError, response)
+		responseCode = http.StatusInternalServerError
+		message = "Some error happened"
+		data = []*model.Post{}
 	} else {
-
-		response := model.Response{
-			ErrorCode:http.StatusOK,
-			Message: "",
-			Data: posts,
-		}
-
-		r.JSON(http.StatusOK, response)
+		data = posts
 	}
+
+	response := model.Response{
+		ErrorCode:responseCode,
+		Message: message,
+		Data: data,
+	}
+
+	r.JSON(responseCode, response)
 }
