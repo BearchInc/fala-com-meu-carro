@@ -6,28 +6,25 @@ import (
 	"github.com/heckfer/fala-com-meu-carro/model"
 	"github.com/drborges/appx"
 	"net/http"
+	"appengine/datastore"
 )
 
 func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *appx.Datastore) {
 
 	carPlate := params["plate"]
 
-	var posts []*model.Post
-	err := appx.Query(model.Posts.AllByCarPlate(carPlate)).Results(&posts)
-
 	response := model.Response{
 		ErrorCode: http.StatusOK,
 		Message: "",
-		Data: []*model.Post{},
+		Data: &[]*model.Post{},
 	}
 
+	err := appx.Query(model.Posts.AllByCarPlate(carPlate)).Results(response.Data)
 
-	if err != nil {
+	if err != nil && err != datastore.Done {
 		log.Printf("Error: %+v", err)
 		response.ErrorCode = http.StatusInternalServerError
-		response.Message = "Some error happened"
-	} else {
-		response.Data = posts
+		response.Message = err.Error()
 	}
 
 	r.JSON(response.ErrorCode, response)

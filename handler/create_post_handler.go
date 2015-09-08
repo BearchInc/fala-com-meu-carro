@@ -25,7 +25,7 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
 	if err != nil {
 		log.Printf("Error: %+v", err)
 		response.ErrorCode = http.StatusInternalServerError
-		response.Message = "Some error happened"
+		response.Message = err.Error()
 	} else {
 		response.Data = post
 	}

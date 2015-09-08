@@ -6,25 +6,23 @@ import (
 	"log"
 
 	"github.com/drborges/appx"
+	"appengine/datastore"
 )
 
 func ListPostsHandler(r render.Render, appx *appx.Datastore) {
 
-	var posts []*model.Post
-	err := appx.Query(model.Posts.All()).Results(&posts)
-
 	response := model.Response{
 		ErrorCode: http.StatusOK,
 		Message: "",
-		Data: []*model.Post{},
+		Data: &[]*model.Post{},
 	}
 
-	if err != nil {
+	err := appx.Query(model.Posts.All()).Results(response.Data)
+
+	if err != nil && err != datastore.Done {
 		log.Printf("Error: %+v", err)
 		response.ErrorCode = http.StatusInternalServerError
-		response.Message = "Some error happened"
-	} else {
-		response.Data = posts
+		response.Message = err.Error()
 	}
 
 	r.JSON(response.ErrorCode, response)
