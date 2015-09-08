@@ -6,7 +6,7 @@ import (
 	"github.com/drborges/appx"
 	"log"
 	"net/http"
-"time"
+	"time"
 )
 
 func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
@@ -19,6 +19,7 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
 
 	post.CarPlate = strings.ToUpper(post.CarPlate)
 	post.CreatedAt = time.Now()
+
 	err := appx.Save(&post)
 
 	if err != nil {
