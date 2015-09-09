@@ -13,3 +13,6 @@ list-posts-pretty:
 
 create-post:
 	curl -XPOST localhost:8080/posts/create --data "user_id=666&user_name=MakeFile Locao&car_plate=AAA-1233&message=Po eu tava lá e o mano me cortou" | prettyjson
+
+flag-post:
+	curl -XPUT localhost:8080/posts/$(id)

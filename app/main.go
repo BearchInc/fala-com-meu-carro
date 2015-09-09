@@ -21,6 +21,7 @@ func init() {
 		r.Post("/create", binding.Bind(model.Post{}), handler.CreatePostHandler)
 		r.Get("/list", handler.ListPostsHandler)
 		r.Get("/list/:plate", handler.ListPostsByCarPlateHandler)
+		r.Put("/:post_id", handler.FlagPostHandler)
 	})
 
 	http.Handle("/", m)
