@@ -23,6 +23,7 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
 	isValid, validationErr := post.IsValid()
 
 	if !isValid {
+		response.ErrorCode = http.StatusBadRequest
 		response.Message = validationErr
 	} else {
 		err := appx.Save(&post)
