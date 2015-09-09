@@ -14,6 +14,8 @@ type Post struct {
 	UserId    string `json:"user_id" form:"user_id"`
 	UserName  string `json:"user_name" form:"user_name"`
 	CreatedAt time.Time `json:"created_at"`
+	Flagged   bool `json:"flagged"`
+	Deleted   bool `json:"deleted"`
 }
 
 func (post *Post) KeySpec() *appx.KeySpec {
@@ -28,10 +30,10 @@ var Posts = struct {
 	AllByCarPlate func(string) *datastore.Query
 }{
 	All: func() *datastore.Query {
-		return datastore.NewQuery(new(Post).KeySpec().Kind).Order("-CreatedAt")
+		return datastore.NewQuery(new(Post).KeySpec().Kind).Filter("Deleted=", false).Order("-CreatedAt")
 	},
 	AllByCarPlate: func(carPlate string) *datastore.Query {
-		return datastore.NewQuery(new(Post).KeySpec().Kind).Filter("CarPlate=", carPlate)
+		return datastore.NewQuery(new(Post).KeySpec().Kind).Filter("CarPlate=", carPlate).Filter("Deleted=", false).Order("-CreatedAt")
 	},
 }
 
