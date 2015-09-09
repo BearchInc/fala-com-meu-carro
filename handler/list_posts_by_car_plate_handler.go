@@ -15,7 +15,7 @@ func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *ap
 
 	response := model.Response{
 		ErrorCode: http.StatusOK,
-		Message: "",
+		Message: []string{},
 		Data: &[]*model.Post{},
 	}
 
@@ -24,8 +24,8 @@ func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *ap
 	if err != nil && err != datastore.Done {
 		log.Printf("Error: %+v", err)
 		response.ErrorCode = http.StatusInternalServerError
-		response.Message = err.Error()
+		response.Message = append(response.Message, err.Error())
 	}
 
-	r.JSON(response.ErrorCode, response)
+	r.JSON(200, response)
 }
