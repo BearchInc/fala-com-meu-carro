@@ -13,7 +13,7 @@ func ListPostsHandler(r render.Render, appx *appx.Datastore) {
 
 	response := model.Response{
 		ErrorCode: http.StatusOK,
-		Message: "",
+		Message: []string{},
 		Data: &[]*model.Post{},
 	}
 
@@ -22,8 +22,8 @@ func ListPostsHandler(r render.Render, appx *appx.Datastore) {
 	if err != nil && err != datastore.Done {
 		log.Printf("Error: %+v", err)
 		response.ErrorCode = http.StatusInternalServerError
-		response.Message = err.Error()
+		response.Message = append(response.Message, err.Error())
 	}
 
-	r.JSON(response.ErrorCode, response)
+	r.JSON(200, response)
 }

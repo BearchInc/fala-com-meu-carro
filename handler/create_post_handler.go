@@ -13,22 +13,28 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
 
 	response := model.Response{
 		ErrorCode: http.StatusOK,
-		Message: "",
+		Message: []string{},
 		Data: nil,
 	}
 
 	post.CarPlate = strings.ToUpper(post.CarPlate)
 	post.CreatedAt = time.Now()
 
-	err := appx.Save(&post)
+	isValid, validationErr := post.IsValid()
 
-	if err != nil {
-		log.Printf("Error: %+v", err)
-		response.ErrorCode = http.StatusInternalServerError
-		response.Message = err.Error()
+	if !isValid {
+		response.Message = validationErr
 	} else {
-		response.Data = post
+		err := appx.Save(&post)
+
+		if err != nil {
+			log.Printf("Error: %+v", err)
+			response.ErrorCode = http.StatusInternalServerError
+			response.Message = append(response.Message, err.Error())
+		} else {
+			response.Data = post
+		}
 	}
 
-	r.JSON(response.ErrorCode, response)
+	r.JSON(200, response)
 }
