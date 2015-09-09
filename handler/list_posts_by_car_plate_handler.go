@@ -21,6 +21,8 @@ func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *ap
 
 	err := appx.Query(model.Posts.AllByCarPlate(carPlate)).Results(response.Data)
 
+	model.SetPostKeys(response.Data.([]*model.Post))
+
 	if err != nil && err != datastore.Done {
 		log.Printf("Error: %+v", err)
 		response.ErrorCode = http.StatusInternalServerError

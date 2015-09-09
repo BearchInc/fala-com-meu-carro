@@ -33,9 +33,11 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
 			response.ErrorCode = http.StatusInternalServerError
 			response.Message = append(response.Message, err.Error())
 		} else {
+			post.SetPostKey()
 			response.Data = post
 		}
 	}
 
 	r.JSON(200, response)
 }
+
