@@ -10,7 +10,6 @@ import (
 )
 
 func ListPostsHandler(r render.Render, appx *appx.Datastore) {
-
 	response := model.Response{
 		ErrorCode: http.StatusOK,
 		Message: []string{},
@@ -18,9 +17,7 @@ func ListPostsHandler(r render.Render, appx *appx.Datastore) {
 	}
 
 	err := appx.Query(model.Posts.All()).Results(response.Data)
-
-	casted := *response.Data.(*[]*model.Post)
-	model.SetPostKeys(casted)
+	model.SetPostKeys(*response.Data.(*[]*model.Post))
 
 	if err != nil && err != datastore.Done {
 		log.Printf("Error: %+v", err)
