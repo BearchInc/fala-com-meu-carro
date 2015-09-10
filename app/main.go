@@ -18,8 +18,8 @@ func init() {
 	m.Use(middleware.AppxProvider)
 
 	m.Group("/posts", func(r martini.Router) {
-		r.Post("/", binding.Bind(model.Post{}), handler.CreatePostHandler)
-		r.Get("/", handler.ListPostsHandler)
+		r.Post("", binding.Bind(model.Post{}), handler.CreatePostHandler)
+		r.Get("", handler.ListPostsHandler)
 		r.Get("/:plate", handler.ListPostsByCarPlateHandler)
 		r.Put("/:post_id", handler.FlagPostHandler)
 	})
