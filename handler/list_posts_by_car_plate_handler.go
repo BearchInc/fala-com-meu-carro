@@ -10,7 +10,6 @@ import (
 )
 
 func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *appx.Datastore) {
-
 	carPlate := params["plate"]
 
 	response := model.Response{
@@ -20,8 +19,7 @@ func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *ap
 	}
 
 	err := appx.Query(model.Posts.AllByCarPlate(carPlate)).Results(response.Data)
-
-	model.SetPostKeys(response.Data.([]*model.Post))
+	model.SetPostKeys(*response.Data.(*[]*model.Post))
 
 	if err != nil && err != datastore.Done {
 		log.Printf("Error: %+v", err)
