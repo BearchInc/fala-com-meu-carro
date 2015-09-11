@@ -17,6 +17,7 @@ type Post struct {
 	Flagged   bool `json:"flagged"`
 	Deleted   bool `json:"deleted"`
 	Id        string `json:"id"`
+	Email     string `json:"email"`
 }
 
 func (post *Post) KeySpec() *appx.KeySpec {
