@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"github.com/heckfer/fala-com-meu-carro/resources"
 )
 
 func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
@@ -33,8 +34,9 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
 			response.ErrorCode = http.StatusInternalServerError
 			response.Message = append(response.Message, err.Error())
 		} else {
-			post.SetPostKey()
-			response.Data = post
+			postResource := &resources.PostResource{}
+			postResource.From(post)
+			response.Data = postResource
 		}
 	}
 
