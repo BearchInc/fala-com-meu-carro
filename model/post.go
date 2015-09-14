@@ -66,13 +66,3 @@ func (post *Post) isPlateValid() bool {
 	valid, _ := regexp.MatchString("[A-Z]{3}-[0-9]{4}", post.CarPlate)
 	return valid
 }
-
-func (post *Post) SetPostKey() {
-	post.Id = post.EncodedKey()
-}
-
-func SetPostKeys(posts []*Post) {
-	for _, post := range posts {
-		post.SetPostKey()
-	}
-}

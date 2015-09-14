@@ -6,6 +6,7 @@ import (
 	"github.com/heckfer/fala-com-meu-carro/model"
 	"net/http"
 	"fmt"
+	"github.com/heckfer/fala-com-meu-carro/resources"
 )
 
 func FlagPostHandler(r render.Render, params martini.Params, appx *appx.Datastore) {
@@ -14,7 +15,7 @@ func FlagPostHandler(r render.Render, params martini.Params, appx *appx.Datastor
 	response := model.Response{
 		ErrorCode: http.StatusOK,
 		Message: []string{},
-		Data: &model.Post{},
+		Data: nil,
 	}
 
 	post := model.Post{}
@@ -39,8 +40,9 @@ func FlagPostHandler(r render.Render, params martini.Params, appx *appx.Datastor
 			response.Message = []string{err.Error()}
 			response.ErrorCode = http.StatusInternalServerError
 		} else {
-			post.SetPostKey()
-			response.Data = post
+			postResource := &resources.PostResource{}
+			postResource.From(post)
+			response.Data = postResource
 		}
 	}
 
