@@ -9,15 +9,16 @@ import (
 type Post struct {
 	appx.Model
 
-	CarPlate  string `json:"car_plate" form:"car_plate"`
-	Message   string `json:"message" form:"message"`
-	UserId    string `json:"user_id" form:"user_id"`
-	UserName  string `json:"user_name" form:"user_name"`
+	CarPlate  string `json:"car_plate"`
+	Message   string `json:"message"`
+	UserId    string `json:"user_id"`
+	UserName  string `json:"user_name"`
 	CreatedAt time.Time `json:"created_at"`
 	Flagged   bool `json:"flagged"`
 	Deleted   bool `json:"deleted"`
 	Id        string `json:"id"`
 	Email     string `json:"email"`
+	Country   string `json:"country"`
 }
 
 func (post *Post) KeySpec() *appx.KeySpec {
