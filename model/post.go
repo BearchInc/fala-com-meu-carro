@@ -16,7 +16,6 @@ type Post struct {
 	CreatedAt time.Time `json:"created_at"`
 	Flagged   bool `json:"flagged"`
 	Deleted   bool `json:"deleted"`
-	Id        string `json:"id"`
 	Email     string `json:"email"`
 	Country   string `json:"country"`
 }

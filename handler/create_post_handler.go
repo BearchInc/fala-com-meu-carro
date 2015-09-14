@@ -8,9 +8,10 @@ import (
 	"net/http"
 	"time"
 	"github.com/heckfer/fala-com-meu-carro/resources"
+	"github.com/heckfer/fala-com-meu-carro/middleware"
 )
 
-func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
+func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore, location middleware.RequestLocation) {
 
 	response := model.Response{
 		ErrorCode: http.StatusOK,
@@ -19,6 +20,7 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore) {
 	}
 
 	post.CarPlate = strings.ToUpper(post.CarPlate)
+	post.Country = location.Country
 	post.CreatedAt = time.Now()
 
 	isValid, validationErr := post.IsValid()
