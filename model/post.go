@@ -28,14 +28,23 @@ func (post *Post) KeySpec() *appx.KeySpec {
 }
 
 var Posts = struct {
-	All           func() *datastore.Query
-	AllByCarPlate func(string) *datastore.Query
+	All           func(string) *datastore.Query
+	AllByCarPlate func(string, string) *datastore.Query
 }{
-	All: func() *datastore.Query {
-		return datastore.NewQuery(new(Post).KeySpec().Kind).Filter("Deleted=", false).Order("-CreatedAt")
+	All: func(country string) *datastore.Query {
+		return datastore.NewQuery(new(Post).
+		KeySpec().Kind).
+		Filter("Deleted=", false).
+		Filter("Country=", country).
+		Order("-CreatedAt")
 	},
-	AllByCarPlate: func(carPlate string) *datastore.Query {
-		return datastore.NewQuery(new(Post).KeySpec().Kind).Filter("CarPlate=", carPlate).Filter("Deleted=", false).Order("-CreatedAt")
+	AllByCarPlate: func(carPlate string, country string) *datastore.Query {
+		return datastore.NewQuery(new(Post).
+		KeySpec().Kind).
+		Filter("CarPlate=", carPlate).
+		Filter("Deleted=", false).
+		Filter("Country=", country).
+		Order("-CreatedAt")
 	},
 }
 

@@ -8,9 +8,10 @@ import (
 	"github.com/drborges/appx"
 	"appengine/datastore"
 	"github.com/heckfer/fala-com-meu-carro/resources"
+	"github.com/heckfer/fala-com-meu-carro/middleware"
 )
 
-func ListPostsHandler(r render.Render, appx *appx.Datastore) {
+func ListPostsHandler(r render.Render, appx *appx.Datastore, location middleware.RequestLocation) {
 	response := model.Response{
 		ErrorCode: http.StatusOK,
 		Message: []string{},
@@ -18,7 +19,7 @@ func ListPostsHandler(r render.Render, appx *appx.Datastore) {
 	}
 
 	posts := []*model.Post{}
-	err := appx.Query(model.Posts.All()).Results(&posts)
+	err := appx.Query(model.Posts.All(location.Country)).Results(&posts)
 
 	response.Data = resources.FromPostResource(posts)
 

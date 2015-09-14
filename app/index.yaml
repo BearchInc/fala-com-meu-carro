@@ -13,6 +13,21 @@ indexes:
 - kind: Post
   properties:
   - name: CarPlate
+  - name: Country
+  - name: Deleted
+  - name: CreatedAt
+    direction: desc
+
+- kind: Post
+  properties:
+  - name: CarPlate
+  - name: Deleted
+  - name: CreatedAt
+    direction: desc
+
+- kind: Post
+  properties:
+  - name: Country
   - name: Deleted
   - name: CreatedAt
     direction: desc

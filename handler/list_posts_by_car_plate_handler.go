@@ -8,9 +8,10 @@ import (
 	"net/http"
 	"appengine/datastore"
 	"github.com/heckfer/fala-com-meu-carro/resources"
+	"github.com/heckfer/fala-com-meu-carro/middleware"
 )
 
-func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *appx.Datastore) {
+func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *appx.Datastore, location middleware.RequestLocation) {
 	carPlate := params["plate"]
 
 	response := model.Response{
@@ -20,7 +21,7 @@ func ListPostsByCarPlateHandler(r render.Render, params martini.Params, appx *ap
 	}
 
 	posts := []*model.Post{}
-	err := appx.Query(model.Posts.AllByCarPlate(carPlate)).Results(&posts)
+	err := appx.Query(model.Posts.AllByCarPlate(carPlate, location.Country)).Results(&posts)
 	response.Data = resources.FromPostResource(posts)
 
 	if err != nil && err != datastore.Done {
