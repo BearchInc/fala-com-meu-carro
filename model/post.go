@@ -48,10 +48,14 @@ var Posts = struct {
 	},
 }
 
-func (post Post) IsValid() (bool, []string) {
+func (post Post) IsValid(country string) (bool, []string) {
 	errors := []string{}
 
-	if !post.isPlateValid() {
+	if post.CarPlate == "" {
+		errors = append(errors, "Placa não pode ser vazia.")
+	}
+
+	if country == "br" && !post.isPlateValid()  {
 		errors = append(errors, "Placa inválida")
 	}
 

@@ -23,7 +23,7 @@ func CreatePostHandler(r render.Render, post model.Post, appx *appx.Datastore, l
 	post.Country = location.Country
 	post.CreatedAt = time.Now()
 
-	isValid, validationErr := post.IsValid()
+	isValid, validationErr := post.IsValid(location.Country)
 
 	if !isValid {
 		response.ErrorCode = http.StatusBadRequest
