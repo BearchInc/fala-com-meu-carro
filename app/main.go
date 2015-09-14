@@ -18,8 +18,6 @@ func init() {
 	m.Use(middleware.AppxProvider)
 	m.Use(middleware.RequestLocationProvider)
 
-	m.Get("/login", handler.LoginHandler)
-
 	m.Group("/posts", func(r martini.Router) {
 		r.Post("", binding.Bind(model.Post{}), handler.CreatePostHandler)
 		r.Get("", handler.ListPostsHandler)
