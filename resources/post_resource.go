@@ -19,3 +19,13 @@ func (this *PostResource) From(post model.Post) {
 	this.Message = post.Message
 	this.UserName = post.UserName
 }
+
+func FromPostResource(posts []*model.Post) []*PostResource {
+	list := []*PostResource{}
+	for _, p := range posts {
+		postResource := PostResource{}
+		postResource.From(*p)
+		list = append(list, &postResource)
+	}
+	return list
+}
