@@ -16,6 +16,9 @@ func init() {
 	m.Use(render.Renderer(render.Options{IndentJSON: true, }))
 	m.Use(middleware.AppengineContextProvider)
 	m.Use(middleware.AppxProvider)
+	m.Use(middleware.RequestLocationProvider)
+
+	m.Get("/login", handler.LoginHandler)
 
 	m.Group("/posts", func(r martini.Router) {
 		r.Post("", binding.Bind(model.Post{}), handler.CreatePostHandler)
