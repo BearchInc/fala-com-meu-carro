@@ -1,23 +1,26 @@
 package model
+
 import (
-	"github.com/drborges/appx"
-	"appengine/datastore"
-	"time"
 	"regexp"
+	"time"
+
+	"github.com/drborges/appx"
+
+	"appengine/datastore"
 )
 
 type Post struct {
 	appx.Model
 
-	CarPlate  string `json:"car_plate"`
-	Message   string `json:"message"`
-	UserId    string `json:"user_id"`
-	UserName  string `json:"user_name"`
+	CarPlate  string    `json:"car_plate"`
+	Message   string    `json:"message"`
+	UserId    string    `json:"user_id"`
+	UserName  string    `json:"user_name"`
 	CreatedAt time.Time `json:"created_at"`
-	Flagged   bool `json:"flagged"`
-	Deleted   bool `json:"deleted"`
-	Email     string `json:"email"`
-	Country   string `json:"country"`
+	Flagged   bool      `json:"flagged"`
+	Deleted   bool      `json:"deleted"`
+	Email     string    `json:"email"`
+	Country   string    `json:"country"`
 }
 
 func (post *Post) KeySpec() *appx.KeySpec {
@@ -33,18 +36,18 @@ var Posts = struct {
 }{
 	All: func(country string) *datastore.Query {
 		return datastore.NewQuery(new(Post).
-		KeySpec().Kind).
-		Filter("Deleted=", false).
-		Filter("Country=", country).
-		Order("-CreatedAt")
+			KeySpec().Kind).
+			Filter("Deleted=", false).
+			Filter("Country=", country).
+			Order("-CreatedAt")
 	},
 	AllByCarPlate: func(carPlate string, country string) *datastore.Query {
 		return datastore.NewQuery(new(Post).
-		KeySpec().Kind).
-		Filter("CarPlate=", carPlate).
-		Filter("Deleted=", false).
-		Filter("Country=", country).
-		Order("-CreatedAt")
+			KeySpec().Kind).
+			Filter("CarPlate=", carPlate).
+			Filter("Deleted=", false).
+			Filter("Country=", country).
+			Order("-CreatedAt")
 	},
 }
 
@@ -55,7 +58,7 @@ func (post Post) IsValid(country string) (bool, []string) {
 		errors = append(errors, "Placa não pode ser vazia.")
 	}
 
-	if country == "br" && !post.isPlateValid()  {
+	if country == "br" && !post.isPlateValid() {
 		errors = append(errors, "Placa inválida")
 	}
 
