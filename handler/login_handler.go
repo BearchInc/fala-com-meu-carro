@@ -17,11 +17,11 @@ func LoginHandler(r render.Render, user model.User, appx *appx.Datastore) {
 		Data:      nil,
 	}
 
-	//isValid, validationErr := user.IsValid()
+	isValid, validationErr := user.IsValid()
 
-	if !true {
+	if !isValid {
 		response.ErrorCode = http.StatusBadRequest
-		//response.Message = validationErr
+		response.Message = validationErr
 	} else {
 		err := appx.Save(&user)
 
